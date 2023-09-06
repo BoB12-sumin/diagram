@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as go from "gojs";
 
-function Pallete({ nodeDataArray }) {
+function Palette({ nodeDataArray }) {
   const paletteDiv = useRef(null);
 
   useEffect(() => {
@@ -16,8 +16,12 @@ function Pallete({ nodeDataArray }) {
     myPalette.nodeTemplate = $(
       go.Node,
       "Auto",
-      $(go.Shape, new go.Binding("figure"), new go.Binding("fill", "color")),
-      $(go.TextBlock, new go.Binding("text"))
+      $(go.Shape, "Rectangle", { fill: null }),
+      $(
+        go.Picture,
+        { margin: 10, width: 50, height: 50 },
+        new go.Binding("source")
+      )
     );
 
     if (paletteDiv.current) {
@@ -37,4 +41,4 @@ function Pallete({ nodeDataArray }) {
   );
 }
 
-export default Pallete;
+export default Palette;
