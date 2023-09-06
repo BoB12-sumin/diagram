@@ -38,7 +38,12 @@ function Palette({ nodeDataArray }) {
   return (
     <div
       ref={paletteDiv}
-      style={{ border: "solid 1px black", width: "300px", height: "600px" }}
+      style={{
+        //margin: "10px",
+        border: "solid 1px black",
+        width: "300px",
+        height: "600px",
+      }}
     />
   );
 }

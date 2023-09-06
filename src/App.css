@@ -53,4 +53,10 @@
   position: absolute;
   top: 0%;
   left: 20%;
+  background-size:20px 20px;
+
+   /* create a grid pattern using linear gradients */
+   background-image:
+     linear-gradient(to right, rgb(231, 231, 231) .5px, transparent .5px),
+     linear-gradient(to bottom, rgb(231, 231, 231)  .5px, transparent .5px);
 }
