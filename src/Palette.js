@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as go from "gojs";
+import "./App.css";
 
 function Palette({ nodeDataArray }) {
   const paletteDiv = useRef(null);
@@ -16,10 +17,11 @@ function Palette({ nodeDataArray }) {
     myPalette.nodeTemplate = $(
       go.Node,
       "Auto",
-      $(go.Shape, "Rectangle", { fill: null }),
+      { background: "#A0BCC2" },
+      //$(go.Shape, "Rectangle", { fill: null }),
       $(
         go.Picture,
-        { margin: 10, width: 50, height: 50 },
+        { margin: 10, width: 50, height: 50, background: "white" },
         new go.Binding("source")
       )
     );
@@ -36,7 +38,7 @@ function Palette({ nodeDataArray }) {
   return (
     <div
       ref={paletteDiv}
-      style={{ border: "solid 1px black", width: "200px", height: "400px" }}
+      style={{ border: "solid 1px black", width: "300px", height: "600px" }}
     />
   );
 }

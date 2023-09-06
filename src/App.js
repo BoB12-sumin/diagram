@@ -11,6 +11,7 @@ function initDiagram() {
   // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
   const diagram = $(go.Diagram, {
     "undoManager.isEnabled": true,
+    "resizingTool.isGridSnapEnabled": true,
     //layout: new go.TreeLayout({ angle: 90, layerSpacing: 35 }),
     "clickCreatingTool.archetypeNodeData": {
       key: 0,
@@ -23,31 +24,49 @@ function initDiagram() {
     }),
   });
 
+  diagram.addLayerBefore(
+    $(go.Layer, { name: "BottomLayer" }),
+    diagram.findLayer("Background")
+  );
+
   // define a simple Node template
   diagram.nodeTemplate = $(
     go.Node,
     "Auto",
-    { background: "#44CCFF" },
-    new go.Binding("location", "loc", go.Spot.Center).makeTwoWay(
-      go.Point.stringify
-    ),
+    { resizable: true, resizeObjectName: "Picture" },
+    { background: "#A0BCC2" },
+    new go.Binding("layerName", "key", function (key) {
+      return key === -7 ? "BottomLayer" : "";
+    }),
     $(
       go.Picture,
       {
-        margin: 10,
+        name: "Picture",
+        margin: new go.Margin(10, 10),
         width: 50,
         height: 50,
-        background: "lightblue",
+        background: "white",
         portId: "",
         cursor: "pointer",
         fromLinkable: true,
+        toLinkable: true,
+
         fromLinkableSelfNode: true,
         fromLinkableDuplicates: true,
-        toLinkable: true,
+
         toLinkableSelfNode: true,
         toLinkableDuplicates: true,
       },
-      new go.Binding("source").makeTwoWay()
+      new go.Binding("source").makeTwoWay(),
+      new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(
+        go.Size.stringify
+      ),
+      new go.Binding("fromLinkable", "key", function (k) {
+        return k !== -7;
+      }),
+      new go.Binding("toLinkable", "key", function (k) {
+        return k !== -7;
+      })
     )
     // $(
     //   go.TextBlock,
@@ -65,8 +84,8 @@ function initDiagram() {
       relinkableFrom: true,
       relinkableTo: true,
     },
-    $(go.Shape, { strokeWidth: 3, stroke: "#555" })
-    //$(go.Shape, { toArrow: "Standard", stroke: null })
+    $(go.Shape, { strokeWidth: 3, stroke: "#555" }),
+    $(go.Shape, { toArrow: "Standard", stroke: null })
   );
 
   diagram.addDiagramListener("ObjectSingleClicked", function (e) {
@@ -101,6 +120,34 @@ function App() {
       figure: "Rectangle",
       color: "lightblue",
       source: "img/icon2.png",
+    },
+    {
+      key: -4,
+      text: "4",
+      figure: "Rectangle",
+      color: "lightblue",
+      source: "img/cat2.png.jpg",
+    },
+    {
+      key: -5,
+      text: "5",
+      figure: "Rectangle",
+      color: "lightblue",
+      source: "img/cat3.png.jpg",
+    },
+    {
+      key: -6,
+      text: "6",
+      figure: "Rectangle",
+      color: "lightblue",
+      source: "img/rainbow.png.jpg",
+    },
+    {
+      key: -7,
+      text: "7",
+      figure: "Rectangle",
+      color: "lightblue",
+      fill: null,
     },
   ];
   return (
