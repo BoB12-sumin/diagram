@@ -1,6 +1,6 @@
 
 
-#화면
+# 화면
 ![image](https://github.com/BoB12-sumin/diagram/assets/66521935/250367b5-0085-4993-b70e-1965b76d6e30)
 
 
