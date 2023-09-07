@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import * as go from "gojs";
 import "./App.css";
 
-function Palette({ nodeDataArray }) {
+const Palette = memo(({ nodeDataArray, divClassName }) => {
   const paletteDiv = useRef(null);
 
   useEffect(() => {
@@ -38,6 +38,7 @@ function Palette({ nodeDataArray }) {
   return (
     <div
       ref={paletteDiv}
+      className={divClassName}
       style={{
         //margin: "10px",
         border: "solid 1px black",
@@ -46,6 +47,6 @@ function Palette({ nodeDataArray }) {
       }}
     />
   );
-}
+});
 
 export default Palette;

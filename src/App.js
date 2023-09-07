@@ -1,104 +1,106 @@
 import React from "react";
-
 import * as go from "gojs";
 import { ReactDiagram } from "gojs-react";
-
 import "./App.css"; // contains .diagram-component CSS
 import Palette from "./Palette";
 
-function initDiagram() {
-  const $ = go.GraphObject.make;
-  // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
-  const diagram = $(go.Diagram, {
-    "undoManager.isEnabled": true,
-    "resizingTool.isGridSnapEnabled": true,
-    //layout: new go.TreeLayout({ angle: 90, layerSpacing: 35 }),
-    "clickCreatingTool.archetypeNodeData": {
-      key: 0,
-      text: "CAT",
-      color: "lightblue",
-      source: "img/cat.png",
-    },
-    model: new go.GraphLinksModel({
-      linkKeyProperty: "key", // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
-    }),
-  });
-
-  diagram.addLayerBefore(
-    $(go.Layer, { name: "BottomLayer" }),
-    diagram.findLayer("Background")
-  );
-
-  // define a simple Node template
-  diagram.nodeTemplate = $(
-    go.Node,
-    "Auto",
-    { resizable: true, resizeObjectName: "Picture" },
-    { background: "#A0BCC2" },
-    new go.Binding("layerName", "key", function (key) {
-      return key === -7 ? "BottomLayer" : "";
-    }),
-    $(
-      go.Picture,
-      {
-        name: "Picture",
-        margin: new go.Margin(10, 10),
-        width: 50,
-        height: 50,
-        background: "white",
-        portId: "",
-        cursor: "pointer",
-        fromLinkable: true,
-        toLinkable: true,
-
-        fromLinkableSelfNode: true,
-        fromLinkableDuplicates: true,
-
-        toLinkableSelfNode: true,
-        toLinkableDuplicates: true,
+const useGoJS = () => {
+  const initDiagram = () => {
+    const $ = go.GraphObject.make;
+    const diagram = $(go.Diagram, {
+      "undoManager.isEnabled": true,
+      "resizingTool.isGridSnapEnabled": true,
+      //layout: new go.TreeLayout({ angle: 90, layerSpacing: 35 }),
+      "clickCreatingTool.archetypeNodeData": {
+        key: 0,
+        text: "CAT",
+        color: "lightblue",
+        source: "img/cat.png",
       },
-      new go.Binding("source").makeTwoWay(),
-      new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(
-        go.Size.stringify
-      ),
-      new go.Binding("fromLinkable", "key", function (k) {
-        return k !== -7;
+      model: new go.GraphLinksModel({
+        linkKeyProperty: "key", // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
       }),
-      new go.Binding("toLinkable", "key", function (k) {
-        return k !== -7;
-      })
-    )
-    // $(
-    //   go.TextBlock,
-    //   "Default Text",
-    //   { stroke: "white", font: "bold 12px sans-serif" },
-    //   new go.Binding("text").makeTwoWay()
-    // )
-  );
+    });
 
-  diagram.linkTemplate = $(
-    go.Link,
-    {
-      routing: go.Link.Orthogonal,
-      corner: 5,
-      relinkableFrom: true,
-      relinkableTo: true,
-    },
-    $(go.Shape, { strokeWidth: 3, stroke: "#555" }),
-    $(go.Shape, { toArrow: "Standard", stroke: null })
-  );
+    diagram.addLayerBefore(
+      $(go.Layer, { name: "BottomLayer" }),
+      diagram.findLayer("Background")
+    );
 
-  diagram.addDiagramListener("ObjectSingleClicked", function (e) {
-    const node = e.subject.part;
-    if (node instanceof go.Node) {
-      console.log(node.data);
-    }
-  });
+    // define a simple Node template
+    diagram.nodeTemplate = $(
+      go.Node,
+      "Auto",
+      { resizable: true, resizeObjectName: "Picture" },
+      { background: "#A0BCC2" },
+      new go.Binding("layerName", "key", function (key) {
+        return key === -7 ? "BottomLayer" : "";
+      }),
+      $(
+        go.Picture,
+        {
+          name: "Picture",
+          margin: new go.Margin(10, 10),
+          width: 50,
+          height: 50,
+          background: "white",
+          portId: "",
+          cursor: "pointer",
+          fromLinkable: true,
+          toLinkable: true,
 
-  return diagram;
-}
+          fromLinkableSelfNode: true,
+          fromLinkableDuplicates: true,
+
+          toLinkableSelfNode: true,
+          toLinkableDuplicates: true,
+        },
+        new go.Binding("source").makeTwoWay(),
+        new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(
+          go.Size.stringify
+        ),
+        new go.Binding("fromLinkable", "key", function (k) {
+          return k !== -7;
+        }),
+        new go.Binding("toLinkable", "key", function (k) {
+          return k !== -7;
+        })
+      )
+      // $(
+      //   go.TextBlock,
+      //   "Default Text",
+      //   { stroke: "white", font: "bold 12px sans-serif" },
+      //   new go.Binding("text").makeTwoWay()
+      // )
+    );
+
+    diagram.linkTemplate = $(
+      go.Link,
+      {
+        routing: go.Link.Orthogonal,
+        corner: 5,
+        relinkableFrom: true,
+        relinkableTo: true,
+      },
+      $(go.Shape, { strokeWidth: 3, stroke: "#555" }),
+      $(go.Shape, { toArrow: "Standard", stroke: null })
+    );
+
+    diagram.addDiagramListener("ObjectSingleClicked", function (e) {
+      const node = e.subject.part;
+      if (node instanceof go.Node) {
+        console.log(node.data);
+      }
+    });
+
+    return diagram;
+  };
+
+  return { initDiagram };
+};
 
 function App() {
+  const { initDiagram } = useGoJS();
   const nodeDataArrayPalette = [
     {
       key: -1,
