@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import * as go from "gojs";
 import { ReactDiagram } from "gojs-react";
 import "./App.css"; // contains .diagram-component CSS
-import Palette from "./Palette";
+import Palette from "./conponent/Palette";
 
-const useGoJS = () => {
+const useGoJS = (onModified) => {
+  const [diagram, setDiagram] = useState(null);
+
   const initDiagram = () => {
     const $ = go.GraphObject.make;
     const diagram = $(go.Diagram, {
@@ -93,14 +95,23 @@ const useGoJS = () => {
       }
     });
 
+    diagram.addDiagramListener("Modified", function (e) {
+      console.log(
+        JSON.stringify(diagram.model.nodeDataArray),
+        JSON.stringify(diagram.model.linkDataArray)
+      );
+    });
+
+    setDiagram(diagram);
+
     return diagram;
   };
 
-  return { initDiagram };
+  return { initDiagram, diagram };
 };
 
 function App() {
-  const { initDiagram } = useGoJS();
+  const { initDiagram, diagram } = useGoJS();
   const nodeDataArrayPalette = [
     {
       key: -1,
@@ -187,6 +198,13 @@ function App() {
       <Palette
         nodeDataArray={nodeDataArrayPalette}
         divClassName="palette-component"
+      />
+      <input
+        type="button"
+        value="Save"
+        onClick={() => {
+          console.log(diagram.model.nodeDataArray, diagram.model.linkDataArray);
+        }}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from "react";
 import * as go from "gojs";
-import "./App.css";
+import "../App.css";
 
 const Palette = memo(({ nodeDataArray, divClassName }) => {
   const paletteDiv = useRef(null);
