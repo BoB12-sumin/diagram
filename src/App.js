@@ -95,12 +95,12 @@ const useGoJS = (onModified) => {
       }
     });
 
-    diagram.addDiagramListener("Modified", function (e) {
-      console.log(
-        JSON.stringify(diagram.model.nodeDataArray),
-        JSON.stringify(diagram.model.linkDataArray)
-      );
-    });
+    // diagram.addDiagramListener("Modified", function (e) {
+    //   console.log(
+    //     JSON.stringify(diagram.model.nodeDataArray),
+    //     JSON.stringify(diagram.model.linkDataArray)
+    //   );
+    // });
 
     setDiagram(diagram);
 
@@ -112,6 +112,10 @@ const useGoJS = (onModified) => {
 
 function App() {
   const { initDiagram, diagram } = useGoJS();
+  // const [newmodel, setNewmodel] = useState({
+  //   nodeDataArray: [diagram.model.nodeDataArray],
+  //   linkDataArray: [diagram.model.linkDataArray],
+  // });
   const nodeDataArrayPalette = [
     {
       key: -1,
@@ -168,31 +172,33 @@ function App() {
       <ReactDiagram
         initDiagram={initDiagram}
         divClassName="diagram-component"
-        nodeDataArray={[
-          {
-            key: 0,
-            loc: "0 0",
-            text: "1",
-            source: "img/cat.png",
-          },
-          {
-            key: 1,
-            loc: "0 100",
-            text: "2",
-            source: "img/icon2.png",
-          },
-          {
-            key: 2,
-            loc: "150 0",
-            text: "3",
-            source: "img/icon1.png",
-          },
-        ]}
-        linkDataArray={[
-          { key: -1, from: 0, to: 1 },
-          { key: -2, from: 0, to: 2 },
-          { key: -3, from: 2, to: 2 },
-        ]}
+        // nodeDataArray={model.nodeDataArray}
+        // linkDataArray={model.linkDataArray}
+        // nodeDataArray={[
+        //   {
+        //     key: 0,
+        //     loc: "0 0",
+        //     text: "1",
+        //     source: "img/cat.png",
+        //   },
+        //   {
+        //     key: 1,
+        //     loc: "0 100",
+        //     text: "2",
+        //     source: "img/icon2.png",
+        //   },
+        //   {
+        //     key: 2,
+        //     loc: "150 0",
+        //     text: "3",
+        //     source: "img/icon1.png",
+        //   },
+        // ]}
+        // linkDataArray={[
+        //   { key: -1, from: 0, to: 1 },
+        //   { key: -2, from: 0, to: 2 },
+        //   { key: -3, from: 2, to: 2 },
+        // ]}
         //onModelChange={handleModelChange}
       />
       <Palette
@@ -203,7 +209,11 @@ function App() {
         type="button"
         value="Save"
         onClick={() => {
-          console.log(diagram.model.nodeDataArray, diagram.model.linkDataArray);
+          console.log(
+            JSON.stringify(diagram.model.nodeDataArray),
+            JSON.stringify(diagram.model.linkDataArray)
+          );
+          // JSON.stringify(newmodel);
         }}
       />
     </div>
